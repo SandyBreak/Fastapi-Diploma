@@ -11,7 +11,7 @@ class Client(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     phone = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    email = Column(String(length=320), unique=True, index=True, nullable=False)
     registration_date = Column(Date, nullable=False)
 
     orders = relationship("Order", back_populates="client")
