@@ -1,0 +1,5 @@
+import os
+
+
+
+SMARTCAPTCHA_SERVER_KEY = os.environ.get('SMARTCAPTCHA_SERVER_KEY')
