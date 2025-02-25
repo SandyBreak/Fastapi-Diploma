@@ -20,7 +20,7 @@ const tables: Table[] = [
     { name: 'payments', label: 'Платежи' },
 ];
 
-const ViewTable = () => {
+const TableView = () => {
     const [activeTable, setActiveTable] = useState<TableNames>('clients');
 
     const renderTable = () => {
@@ -49,4 +49,4 @@ const ViewTable = () => {
     );
 };
 
-export default ViewTable;
+export default TableView;
