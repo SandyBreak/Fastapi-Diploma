@@ -5,12 +5,14 @@ import '../styles/components.css'
 const NotFoundPage = () => {
   const navigate = useNavigate();
 
+  // Перенаправление на главную страницу
   const handleGoHome = () => {
-    navigate('/authenticated-route'); // Перенаправление на главную страницу
+    navigate('/authenticated-route');
   };
 
+  // Возврат на предыдущую страницу
   const handleGoBack = () => {
-    navigate(-1); // Возврат на предыдущую страницу
+    navigate(-1);
   };
 
   return (
