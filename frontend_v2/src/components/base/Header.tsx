@@ -44,7 +44,7 @@ const Header = () => {
   	    	  	  	<MenuButton text="Обновление данных" path="/authenticated-route/update_table"/>
   	    	  	</div>
   	    	  	<div className='headerContainer'>
-					<b style={{margin:'0'}}>Пользователь: {username}</b>
+					<b style={{margin:'0', textAlign: 'center'}}>Пользователь: {username}</b>
   	    	  	  	<button className='defaultButton' style={{display: 'flex', margin:'0'}} onClick={handleLogout}>Выйти</button>
   	    	  	</div>
   	    	</header>
