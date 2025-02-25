@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { TableNames } from '../../types/tableTypes.ts';
 
 import Header from '../../components/base/Header.tsx';
-import GenerateTable from '../../components/tables/GenerateTable.tsx';
+import GenerateTableView from '../../components/tables/GenerateTableView.tsx';
 import Footer from '../../components/base/Footer.tsx';
 
 import '../../styles/components.css';
@@ -20,10 +21,10 @@ const tables: Table[] = [
 ];
 
 const ViewTable = () => {
-    const [activeTable, setActiveTable] = useState<string>('clients');
+    const [activeTable, setActiveTable] = useState<TableNames>('clients');
 
     const renderTable = () => {
-        return <GenerateTable name_table={activeTable} />;
+        return <GenerateTableView name_table={activeTable} />;
     };
 
     return (
@@ -34,7 +35,7 @@ const ViewTable = () => {
                     <button
                         key={table.name}
                         className={`defaultButton ${activeTable === table.name ? 'active' : ''}`}
-                        onClick={() => setActiveTable(table.name)}
+                        onClick={() => setActiveTable(table.name as 'clients' | 'services' | 'orders' | 'reviews' | 'payments')}
                     >
                         {table.label}
                     </button>
