@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/components.css'
+import '../../styles/components.css'
 
 const LoginPage = () => {
     const [username, setUsername] = useState<string>('');
