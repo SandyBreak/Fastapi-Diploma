@@ -1,5 +1,5 @@
-import Header from '../components/base_components/Header.tsx'
-import Footer from '../components/base_components/Footer.tsx'
+import Header from '../components/base/Header.tsx'
+import Footer from '../components/base/Footer.tsx'
 
 import '../styles/components.css'
 
