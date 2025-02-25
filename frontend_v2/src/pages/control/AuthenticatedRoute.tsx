@@ -1,5 +1,6 @@
 import { useNavigate, Navigate, Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AuthenticatedRoute = () => {
     const navigate = useNavigate();
@@ -9,34 +10,34 @@ const AuthenticatedRoute = () => {
 
     const helloMessage = async () => {
         const url = 'http://127.0.0.1:8000/authenticated-route';
-
+    
         if (!token) {
             setError('No authentication token found.');
             setLoading(false);
             return;
         }
-
+    
         try {
-            const response = await fetch(url, {
-                method: 'GET',
+            const response = await axios.get(url, {
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             });
-
-            if (!response.ok) {
-                if (response.status === 401) {
+            setLoading(false);
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response) {
+                if (error.response.status === 401) {
                     localStorage.removeItem('token');
                     setError('Unauthorized access. Redirecting to login...');
                 } else {
-                    throw new Error('Network response was not ok: ' + response.statusText);
+                    setError('Network response was not ok: ' + error.response.statusText);
                 }
+            } else if (error instanceof Error) {
+                setError(error.message);
             } else {
-                setLoading(false);
+                setError('An unknown error occurred');
             }
-        } catch (error) {
-            setError(error instanceof Error ? error.message : 'An unknown error occurred');
             console.error('Error during fetching message:', error);
         } finally {
             setLoading(false);
