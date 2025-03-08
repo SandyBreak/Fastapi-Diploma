@@ -72,7 +72,7 @@ const LoginPage = () => {
                     </label>
                 </div>
                 <div className='buttonContainer'>
-                    <button type="submit" className="defaultButton">Войти</button>
+                    <button type="submit" className='defaultButton staticButton'>Войти</button>
                 </div>
             </form>
         </div>
