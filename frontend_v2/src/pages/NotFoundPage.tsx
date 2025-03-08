@@ -20,8 +20,8 @@ const NotFoundPage = () => {
   	  	  	<h1>404 - Страница не найдена</h1>
   	  	  	<p >Извините, но запрашиваемая страница не существует.</p>
   	  	  	<div>
-  	  	  		<button className='defaultButton' onClick={handleGoHome}>Домой</button>
-  	  	  		<button className='defaultButton' onClick={handleGoBack}>Назад</button>
+  	  	  		<button className='defaultButton staticButton' onClick={handleGoHome}>Домой</button>
+  	  	  		<button className='defaultButton staticButton' onClick={handleGoBack}>Назад</button>
   	  	  	</div>
   	  	</div>
   	);
