@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-import MenuButton from '../MenuButton';
+import MenuButton from '../utils/MenuButton';
 import logo from '../../assets/logo.png';
 
 const Header = () => {
-  	const navigate = useNavigate();
-  	const [username, setUsername] = useState(null);
-
-  	React.useEffect(() => {
+    const [activePath, setActivePath] = useState(() => {return localStorage.getItem('activePath') || '/authenticated-route';});
+    const [username, setUsername] = useState(null);
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const navigate = useNavigate();
+    
+    React.useEffect(() => {
         const fetchImages = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await axios.get('http://127.0.0.1:8000/users/me', {
+                const response = await axios.get(`${apiUrl}/users/me`, {
                     headers: {
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -26,30 +28,36 @@ const Header = () => {
         };
         fetchImages();
     }, []);
-  	
-	const handleLogout = () => {
-  	  	localStorage.removeItem('token');
-  	  	navigate('/login');
-  	};
 
-  	return (
-  	  	<>
-  	    	<header>
-  	    	  	<div className='headerContainer'>
-  	    	  	  	<a href='/authenticated-route'><img src={logo} width="100" height="40"/></a>
-  	    	  	</div>
-  	    	  	<div className='main-menu'>
-  	    	  	  	<MenuButton text="Просмотр данных" path="/authenticated-route/view_table"/>
-  	    	  	  	<MenuButton text="Фильтрация данных" path="/authenticated-route/filter_table"/>
-  	    	  	  	<MenuButton text="Обновление данных" path="/authenticated-route/update_table"/>
-  	    	  	</div>
-  	    	  	<div className='headerContainer'>
-					<b style={{margin:'0', textAlign: 'center'}}>Пользователь: {username}</b>
-  	    	  	  	<button className='defaultButton' style={{display: 'flex', margin:'0'}} onClick={handleLogout}>Выйти</button>
-  	    	  	</div>
-  	    	</header>
-  	  	</>
-  	)
+    const handleNavigation = (path: string) => {
+        setActivePath(path);
+		localStorage.setItem('activePath', path);
+        navigate(path);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('activePath');
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
+
+    return (
+        <>
+            <header>
+                <div className='headerContainer'>
+                    <a href='/authenticated-route'><img src={logo} width="100" height="40" alt="Logo" /></a>
+                </div>
+                <div className='main-menu'>
+                    <MenuButton text="Просмотр данных" path="/authenticated-route/view_table" isActive={activePath === '/authenticated-route/view_table'} onNavigate={handleNavigation} />
+                    <MenuButton text="Фильтрация данных" path="/authenticated-route/filter_table" isActive={activePath === '/authenticated-route/filter_table'} onNavigate={handleNavigation} />
+                </div>
+                <div className='headerContainer'>
+                    <b>Пользователь: {username}</b>
+                    <button className='defaultButton staticButton logoutButton' onClick={handleLogout}>Выйти</button>
+                </div>
+            </header>
+        </>
+    );
 }
 
-export default Header
+export default Header;
