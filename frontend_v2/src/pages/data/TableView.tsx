@@ -24,6 +24,8 @@ const TableView = () => {
     const [activeTable, setActiveTable] = useState<TableNames>('clients');
 
     const renderTable = () => {
+        localStorage.setItem('activeTable', activeTable);
+        
         return <GenerateTableView name_table={activeTable} />;
     };
 
@@ -34,9 +36,8 @@ const TableView = () => {
                 {tables.map((table) => (
                     <button
                         key={table.name}
-                        className={`defaultButton ${activeTable === table.name ? 'active' : ''}`}
-                        onClick={() => setActiveTable(table.name as 'clients' | 'services' | 'orders' | 'reviews' | 'payments')}
-                    >
+                        className={`defaultButton ${activeTable === table.name ? 'activeButton' : 'inactiveButton'}`}
+                        onClick={() => setActiveTable(table.name as TableNames)}>
                         {table.label}
                     </button>
                 ))}
