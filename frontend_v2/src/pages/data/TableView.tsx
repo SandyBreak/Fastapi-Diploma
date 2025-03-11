@@ -15,7 +15,7 @@ const TableView = () => {
         localStorage.setItem('activeTable', activeTable);
         localStorage.setItem('formData', '');
         
-        return <GenerateTableView name_table={activeTable} />;
+        return <GenerateTableView activeTable={activeTable} />;
     };
 
     return (

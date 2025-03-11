@@ -12,7 +12,7 @@ const FilteredTableView = () => {
   const [activeTable, setActiveTable] = useState<TableNames>('clients');
 
     const renderTable = () => {
-        return <GenerateFilteredTableView name_table={activeTable} />;
+        return <GenerateFilteredTableView activeTable={activeTable} />;
     };
 
     return (
