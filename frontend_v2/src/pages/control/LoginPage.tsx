@@ -10,7 +10,7 @@ const LoginPage = () => {
 
     const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setter(e.target.value);
-        setError(''); // Сбрасываем ошибку при вводе
+        setError('');
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +49,7 @@ const LoginPage = () => {
     return (
         <div className='mainSection loginPageContainer'>
             <h1>Вход</h1>
-            {error && <div className="error">{error}</div>} {/* Отображение сообщения об ошибке */}
+            {error && <div className="error">{error}</div>}
             <form className='loginForm' onSubmit={handleSubmit}>
                 <div className=''>
                     <label> E-mail
@@ -57,7 +57,7 @@ const LoginPage = () => {
                             type="text"
                             value={username}
                             onChange={handleInputChange(setUsername)}
-                            required
+                            required={true}
                         />
                     </label>
                 </div>
@@ -67,7 +67,7 @@ const LoginPage = () => {
                             type="password"
                             value={password}
                             onChange={handleInputChange(setPassword)}
-                            required
+                            required={true}
                         />
                     </label>
                 </div>
