@@ -53,8 +53,14 @@ function GenerateAddDataForm({ activeTable, onSave , setErrorMessage}: GenerateA
             setIsDirty(false);
             setErrorMessage(null);
         } catch (error) {
-            const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.detail || 'Неизвестная ошибка!': 'Неизвестная ошибка !';
-			setErrorMessage(errorMessage);
+            let errorMessage = 'Неизвестная ошибка!';
+            
+            if (axios.isAxiosError(error) && error.response) {
+                if (error.status === 422)
+                    errorMessage = 'Пожалуйста заполните все поля!'
+            }
+            
+            setErrorMessage(errorMessage);
         }
         onSave();
     };
