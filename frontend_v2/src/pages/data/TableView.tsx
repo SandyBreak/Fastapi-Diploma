@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TableNames } from '../../types/tableTypes.ts';
+import { TableNames, TablesList } from '../../types/TableTypes.ts';
 
 import Header from '../../components/base/Header.tsx';
 import GenerateTableView from '../../components/tables/GenerateTableView.tsx';
@@ -7,18 +7,6 @@ import Footer from '../../components/base/Footer.tsx';
 
 import '../../styles/components.css';
 
-const tables: Table[] = [
-    { name: 'clients', label: 'Клиенты' },
-    { name: 'services', label: 'Услуги' },
-    { name: 'orders', label: 'Заказы' },
-    { name: 'reviews', label: 'Отзывы' },
-    { name: 'payments', label: 'Платежи' },
-];
-
-interface Table {
-    name: string;
-    label: string;
-}
 
 const TableView = () => {
     const [activeTable, setActiveTable] = useState<TableNames>('clients');
@@ -34,7 +22,7 @@ const TableView = () => {
         <>
             <Header />
             <div className='menuTable'>
-                {tables.map((table) => (
+                {TablesList.map((table) => (
                     <button
                         key={table.name}
                         className={`defaultButton ${activeTable === table.name ? 'activeButton' : 'inactiveButton'}`}
