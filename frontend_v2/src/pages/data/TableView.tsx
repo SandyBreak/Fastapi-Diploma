@@ -13,7 +13,7 @@ const TableView = () => {
 
     const renderTable = () => {
         localStorage.setItem('activeTable', activeTable);
-        localStorage.setItem('formData', '');
+        localStorage.setItem('formOfAddedData', '');
         
         return <GenerateTableView activeTable={activeTable} />;
     };
