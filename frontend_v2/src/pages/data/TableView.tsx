@@ -7,11 +7,6 @@ import Footer from '../../components/base/Footer.tsx';
 
 import '../../styles/components.css';
 
-interface Table {
-    name: string;
-    label: string;
-}
-
 const tables: Table[] = [
     { name: 'clients', label: 'Клиенты' },
     { name: 'services', label: 'Услуги' },
@@ -20,11 +15,17 @@ const tables: Table[] = [
     { name: 'payments', label: 'Платежи' },
 ];
 
+interface Table {
+    name: string;
+    label: string;
+}
+
 const TableView = () => {
     const [activeTable, setActiveTable] = useState<TableNames>('clients');
 
     const renderTable = () => {
         localStorage.setItem('activeTable', activeTable);
+        localStorage.setItem('formData', '');
         
         return <GenerateTableView name_table={activeTable} />;
     };
