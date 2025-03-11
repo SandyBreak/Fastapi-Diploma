@@ -119,7 +119,7 @@ function GenerateAddDataForm({ activeTable, onSave , setErrorMessage}: GenerateA
             </td>
         ))}
         <td style={{ width: '1px'}}>
-            <button className='saveButton staticButton' onClick={handleSubmit}>Добавить</button>
+            <button className='saveOrDeleteButton staticButton' onClick={handleSubmit}>Добавить</button>
         </td>
         </tr>
         </>
