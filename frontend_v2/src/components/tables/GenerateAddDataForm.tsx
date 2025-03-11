@@ -49,7 +49,7 @@ function GenerateAddDataForm({ activeTable, onSave , setErrorMessage}: GenerateA
     
         try {
             await UniversalAxiosRequest(`${apiUrl}/database/save_data`, 'POST', insertData);
-            setFormOfAddedData({});
+            //setFormOfAddedData({}); // очищение чтобы не добавлять подряд одни и теже данные
             setIsDirty(false);
             setErrorMessage(null);
         } catch (error) {
