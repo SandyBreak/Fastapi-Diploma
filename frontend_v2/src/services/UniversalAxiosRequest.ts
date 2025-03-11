@@ -11,10 +11,15 @@ import { ResponseTypes } from '../types/TableTypes.ts';
  */
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
-type AxiosResponse = ResponseTypes | [];
+type ApiResponse =  ResponseTypes | TokenResponse | [];
+
+type TokenResponse ={
+    access_token: string
+    token_type: string
+}
 
 const UniversalAxiosRequest = async (path: string, method: HttpMethod = 'GET', params: object = {}, config: object = {}
-): Promise<AxiosResponse> => {
+): Promise<ApiResponse> => {
     try {
         const options: AxiosRequestConfig = {
             method,
@@ -29,7 +34,7 @@ const UniversalAxiosRequest = async (path: string, method: HttpMethod = 'GET', p
             // Для других методов добавляем данные в тело запроса
             options.data = params;
         }
-
+        
         const response = await axios(options);
         return response.data;
     } catch (error) {
