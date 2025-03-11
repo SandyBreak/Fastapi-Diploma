@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/components.css'
+import UniversalAxiosRequest from '../../services/UniversalAxiosRequest';
 
 const LoginPage = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_URL;
+
 
     const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setter(e.target.value);
@@ -19,26 +22,18 @@ const LoginPage = () => {
             'grant_type': 'password',
             'username': username,
             'password': password,
-        }).toString();
-
+        });
+        const headers =  {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
         try {
-            const response = await fetch('http://127.0.0.1:8000/auth/jwt/login', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: body,
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Login failed');
+            const response = await UniversalAxiosRequest(`${apiUrl}/auth/jwt/login`, 'POST', body, headers);
+            console.log(response)
+            if ('access_token' in response) {
+                localStorage.setItem('token', response.access_token);
+                navigate('/authenticated-route');
             }
-
-            const data = await response.json();
-            localStorage.setItem('token', data.access_token);
-            navigate('/authenticated-route');
         } catch (error) {
             setError(error instanceof Error ? error.message : 'An unknown error occurred');
             console.error('Error during login:', error);
@@ -49,7 +44,7 @@ const LoginPage = () => {
     return (
         <div className='mainSection loginPageContainer'>
             <h1>Вход</h1>
-            {error && <div className="error">{error}</div>}
+            {error && <div className="error-message">{error}</div>}
             <form className='loginForm' onSubmit={handleSubmit}>
                 <div className=''>
                     <label> E-mail

@@ -1,51 +1,50 @@
-import { useNavigate, Navigate, Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useNavigate, Navigate, Outlet } from 'react-router-dom';
+
 import axios from 'axios';
+
+import UniversalAxiosRequest from '../../services/UniversalAxiosRequest';
 
 const AuthenticatedRoute = () => {
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const token = localStorage.getItem('token');
-
-    const helloMessage = async () => {
-        const url = 'http://127.0.0.1:8000/authenticated-route';
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const Authentication = async () => {
     
         if (!token) {
             setError('No authentication token found.');
             setLoading(false);
             return;
         }
-    
         try {
-            const response = await axios.get(url, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+            const headers =  {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            await UniversalAxiosRequest(`${apiUrl}/authenticated-route`, 'GET', {}, {headers})
+
             setLoading(false);
         } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response) {
-                if (error.response.status === 401) {
-                    localStorage.removeItem('token');
-                    setError('Unauthorized access. Redirecting to login...');
-                } else {
-                    setError('Network response was not ok: ' + error.response.statusText);
-                }
-            } else if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError('An unknown error occurred');
-            }
             console.error('Error during fetching message:', error);
+
+            const errorMessage = axios.isAxiosError(error) && error.response
+                ? error.response.status === 401
+                    ? (localStorage.removeItem('token'), 'Unauthorized access. Redirecting to login...')
+                    : `Network response was not ok: ${error.response.statusText}`
+                : error instanceof Error
+                    ? error.message
+                    : 'An unknown error occurred';
+
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        helloMessage();
+        Authentication();
     }, []);
 
     useEffect(() => {
@@ -69,7 +68,7 @@ const AuthenticatedRoute = () => {
 
     return (
         <div>
-            {error && <div>Error: {error}</div>} 
+            {error && <div className='error-message'>Error: {error}</div>} 
             <Outlet />
         </div>
     );
