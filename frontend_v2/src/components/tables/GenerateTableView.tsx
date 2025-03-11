@@ -1,204 +1,92 @@
 import React from 'react';
-import { Service, Client, Order, Review, Payment, ResponseTypes, TableNames } from '../../types/tableTypes.ts';
-import {createColumnHelper, flexRender, getCoreRowModel, useReactTable, ColumnDef} from '@tanstack/react-table';
+import axios from 'axios';
 
-import AxiosTableData from '../../services/AxiosTableData.ts';
+import { flexRender, getCoreRowModel, useReactTable} from '@tanstack/react-table';
 
-const clientColumnHelper = createColumnHelper<Client>()
-const serviceColumnHelper = createColumnHelper<Service>()
-const orderColumnHelper = createColumnHelper<Order>()
-const reviewColumnHelper = createColumnHelper<Review>()
-const paymentsColumnHelper = createColumnHelper<Payment>()
+import { ResponseTypes, TableNames } from '../../types/TableTypes.ts';
 
+import UniversalAxiosRequest from '../../services/UniversalAxiosRequest.ts';
+import CreateColumnsMap from '../../services/CreateColumnsMap.tsx';
+import GenerateAddDataForm from './GenerateAddDataForm.tsx';
 
-const columnsMap: Record<TableNames, ColumnDef<any, any>[]> = {
-	clients:  [
-		clientColumnHelper.accessor('id', {
-			  header: () => <span>ID</span>,
-		}),
-		clientColumnHelper.accessor('first_name', {
-			  header: () => <span>Имя</span>,
-		}),
-		clientColumnHelper.accessor('last_name', {
-		  header: () => <span>Фамилия</span>,
-		}),
-		clientColumnHelper.accessor('phone', {
-			  header: () => <span>Телефон</span>,
-		}),
-		clientColumnHelper.accessor('email', {
-			  header: () => <span>Почта</span>,
-		}),
-		clientColumnHelper.accessor('registration_date', {
-		  header: () => <span>Дата регистрации</span>
-		}),
-	],
-  	services: [
-		serviceColumnHelper.accessor('id', {
-			  header: () => <span>ID</span>,
-		}),
-		serviceColumnHelper.accessor('name', {
-			  header: () => <span>Услуга</span>,
-		}),
-		serviceColumnHelper.accessor('description', {
-			  header: () => <span>Описание</span>,
-		}),
-		serviceColumnHelper.accessor('price', {
-			  header: () => <span>Цена</span>,
-		})
-	],
-	orders: [
-		orderColumnHelper.accessor('id', {
-			  header: () => 'ID',
-		}),
-		orderColumnHelper.accessor('service_id', {
-			  header: () => 'ID Услуги',
-		}),
-		orderColumnHelper.accessor('client_id', {
-			  header: () => <span>ID Клиента</span>,
-		}),
-		orderColumnHelper.accessor('status', {
-			  header: () => <span>Статус</span>,
-		}),
-  	],
-	reviews: [
-		reviewColumnHelper.accessor('id', {
-		  header: () => <span>ID</span>,
-		}),
-		reviewColumnHelper.accessor('service_id', {
-			  header: () => <span>ID Сервиса</span>,
-		}),
-		reviewColumnHelper.accessor('client_id', {
-		  header: () => <span>ID Клиента</span>
-		}),
-		reviewColumnHelper.accessor('review_date', {
-			  header: () => <span>Дата отзыва</span>,
-		}),
-		reviewColumnHelper.accessor('rating', {
-			  header: () => <span>Оценка</span>,
-		}),
-		reviewColumnHelper.accessor('text', {
-			  header: () => <span>Текст</span>,
-		}),
-  	],
-	payments: [
-		paymentsColumnHelper.accessor('id', {
-			  header: () => <span>ID</span>,
-		}),
-		paymentsColumnHelper.accessor('order_id', {
-			  header: () => <span>ID Заказа</span>,
-		}),
-		paymentsColumnHelper.accessor('payment_date', {
-			  header: () => <span>Дата платежа</span>,
-		}),
-		paymentsColumnHelper.accessor('payment_method', {
-			  header: () => <span>Метод оплаты</span>,
-		}),
-  	]
-}
-
-interface GenericTableProps {
-  name_table: TableNames;
-}
- 
-function GenerateTableView({ name_table }: GenericTableProps) {
-  	const [data, setData] = React.useState<ResponseTypes[]>([]);
-  	const rerender = React.useReducer(() => ({}), {})[1]
-  	const apiUrl = import.meta.env.VITE_API_URL;
-
-  	// Выбор столбцов в зависимости от name_table
-  	const choosen_columns = columnsMap[name_table];
-
-  	console.log('choosen_columns', choosen_columns)
-
-  	const table = useReactTable({
-  	  	data,
-  	  	columns: choosen_columns,
-  	  	getCoreRowModel: getCoreRowModel(),
-  	});
-
-  	const fetchData = async () => {
+interface GenerateTableViewProps {activeTable: TableNames}
+function GenerateTableView({ activeTable }: GenerateTableViewProps) {
+	const [tableData, setTableData] = React.useState<ResponseTypes[]>([]);
+	const [errorMessage, setErrorMessage] = React.useState<string | null>(null); // Состояние для сообщения об ошибке
+	const rerender = React.useReducer(() => ({}), {})[1]
+	const apiUrl = import.meta.env.VITE_API_URL;
+	
+	const handleRerenderAndGetTableData = async () => {
+		await getTableData();
+		rerender();
+  	};
+	React.useEffect(() => {
+		getTableData();
+  	}, [activeTable]);
+	
+	const handleSetErrorMessage = (message: string | null) => {
+        setErrorMessage(message);
+        if (message) {
+            setTimeout(() => {
+                setErrorMessage(null);
+            }, 3000);
+        }
+    };
+	
+  	const getTableData = async () => {
   	  	try {
-  	  	  	const formData = new FormData();
-  	  	  	formData.append('name_table', name_table);
-  	  	  	const response = await AxiosTableData(`${apiUrl}/database/get_table`, 'POST', formData);
-  	  	  	if (Array.isArray(response)) {
-				setData(response as ResponseTypes[]);
-			} else {
-				console.error('Expected an array but received:', response);
-			}
-  	  	  	console.log(response)
+  	  	  	const name_table = new FormData();
+  	  	  	name_table.append('name_table', activeTable);
+  	  	  	const response = await UniversalAxiosRequest(`${apiUrl}/database/get_table`, 'POST', name_table);
+			setTableData(response as ResponseTypes[]);
   	  	} catch (error) {
-  	  	  	console.error('Error posting data:', error);
+			const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.detail || 'Неизвестная ошибка!': 'Неизвестная ошибка !';
+			setErrorMessage(errorMessage);
   	  	}
   	};
 
-  	const handleRerenderAndFetch = async () => {
-  	  	await fetchData();
-  	  	rerender();
-  	};
+  	
+	//Получение столбцов
+	const columnsMap = CreateColumnsMap(activeTable, handleRerenderAndGetTableData, handleSetErrorMessage)
+  	const choosen_columns = columnsMap[activeTable];
 
-  	React.useEffect(() => {
-  	  	fetchData();
-  	}, [name_table]);
+  	const renderedTable = useReactTable({data: tableData, columns: choosen_columns,getCoreRowModel: getCoreRowModel()});
 
-  	if (!table) {
-  	  	return <div color='black'>Loading...</div>; // Показываем индикатор загрузки, пока таблица не инициализирована
+  	if (!renderedTable) {
+  	  	return <div color='black'>Loading...</div>;
   	}
-
+	  
   	return (
-  	  	<div className="p-2">
+  	  	<div className='activeTable'>
   	  	  	<table>
   	  	  	  	<thead>
-  	  	  	  	  	{table.getHeaderGroups().map(headerGroup => (
-  	  	  	  	  	  	<tr key={headerGroup.id}>
-  	  	  	  	  	  	  	{headerGroup.headers.map(header => (
-  	  	  	  	  	  	  	  	<th key={header.id}>
-  	  	  	  	  	  	  	  	  	{header.isPlaceholder
-  	  	  	  	  	  	  	  	  	  	? null
-  	  	  	  	  	  	  	  	  	  	: flexRender(
-  	  	  	  	  	  	  	  	  	  	    header.column.columnDef.header,
-  	  	  	  	  	  	  	  	  	  	    header.getContext()
-										)
-									}
-  	  	  	  	  	  	  	  	</th>
-  	  	  	  	  	  	  	))}
-  	  	  	  	  	  	</tr>
+  	  	  	  	  	{renderedTable.getHeaderGroups().map(headerGroup => (
+  	  	  	  	  		<tr key={headerGroup.id}>
+  	  	  	  	  		  	{headerGroup.headers.map(header => (
+  	  	  	  	  		  	  	<th key={header.id}>
+  	  	  	  	  		  	  	  	{header.isPlaceholder? null : flexRender(header.column.columnDef.header, header.getContext())}
+  	  	  	  	  		  	  	</th>
+  	  	  	  	  		  	))}
+  	  	  	  	  		</tr>
   	  	  	  	  	))}
   	  	  	  	</thead>
   	  	  	  	<tbody>
-  	  	  	  	  	{table.getRowModel().rows.map(row => (
+  	  	  	  	  	{renderedTable.getRowModel().rows.map(row => (
   	  	  	  	  	  	<tr key={row.id}>
-  	  	  	  	  	  	  	{row.getVisibleCells().map(cell => (
-  	  	  	  	  	  	  	  	<td key={cell.id}>
-  	  	  	  	  	  	  	  		{flexRender(cell.column.columnDef.cell, cell.getContext())}
-  	  	  	  	  	  	  	  	</td>
-  	  	  	  	  	  	  		))
-							}
-  	  	  	  	  	  	</tr>
+							{row.getVisibleCells().map(cell => (
+								<td key={cell.id} id={`${cell.column.id}-${row.id}`} data-value={cell.getValue()}>
+									{flexRender(cell.column.columnDef.cell, cell.getContext())}
+								</td>
+							))}
+
+						</tr>
   	  	  	  	  	))}
   	  	  	  	</tbody>
   	  	  	  	<tfoot>
-  	  	  	  	  	{table.getFooterGroups().map(footerGroup => (
-  	  	  	  	  	  	<tr key={footerGroup.id}>
-  	  	  	  	  	  	  	{footerGroup.headers.map(header => (
-  	  	  	  	  	  	  	  	<th key={header.id}>
-  	  	  	  	  	  	  	  	  	{header.isPlaceholder
-  	  	  	  	  	  	  	  	  	  	? null
-  	  	  	  	  	  	  	  	  	  	: flexRender(
-  	  	  	  	  	  	  	  	  	  	  	header.column.columnDef.footer,
-  	  	  	  	  	  	  	  	  	  	  	header.getContext()
-  	  	  	  	  	  	  	  	  		)
-									}
-  	  	  	  	  	  	  	  	</th>
-  	  	  	  	  	  	  	))}
-  	  	  	  	  	  	</tr>
-  	  	  	  	  	))}
+					<GenerateAddDataForm activeTable={activeTable} onSave={handleRerenderAndGetTableData} setErrorMessage={handleSetErrorMessage}/>
   	  	  	  	</tfoot>
   	  	  	</table>
-  	  	  	<div className="h-4"/>
-  	  	  	<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-  	  	  	  <button onClick={handleRerenderAndFetch} className='defaultButton' style={{margin: '1%'}}>Обновить данные</button>
-  	  	  	</div>
+  	  	  	{errorMessage && <div className="error-message">{errorMessage}</div>} {/* Отображаем сообщение об ошибке */}
   	  	</div>
   	)
 }
