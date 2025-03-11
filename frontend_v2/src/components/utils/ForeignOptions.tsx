@@ -1,44 +1,43 @@
 // ClientSelectOptions.tsx
-import React, { useState, useEffect } from 'react';
-import { FormField } from '../tables/GenerateAddDataForm.tsx';
-import AxiosTableData from '../../services/AxiosTableData.ts';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+import UniversalAxiosRequest from '../../services/UniversalAxiosRequest.ts';
+import { FormField } from '../../types/TableTypes.ts';
+
 
 interface Option {
-    id: number;
-    value: string;
+    id: number
+    value: string
 }
-
-interface ForeignSelectProps {
-    field: FormField;
+interface ForeignOptionsProps {
+    field: FormField
 }
-
-const ForeignOptions: React.FC<ForeignSelectProps> = ({ field }) => {
+const ForeignOptions = ({field}: ForeignOptionsProps) => {
     const [options, setOptions] = useState<Option[]>([]);
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    const fetchData = async () => {
+    const getOptions = async () => {
         try {
-            const formData = new FormData();
-            if (field.select_type) { // Проверяем, что select_type определен
-                formData.append('name_table', field.select_type);
-                const response = await AxiosTableData(`${apiUrl}/database/get_table_data_fields`, 'POST', formData);
+            const activeTable = new FormData();
+            if (field.select_type) {
+                activeTable.append('name_table', field.select_type);
+                const response = await UniversalAxiosRequest(`${apiUrl}/database/get_table_data_fields`, 'POST', activeTable);
                 if (Array.isArray(response)) {
                     setOptions(response);
-                } else {
-                    console.error('Expected an array but received:', response);
+
                 }
             } else {
-                console.error('field.select_type is undefined');
+                console.error('field.select_type is undefined')
             }
         } catch (error) {
-            console.error('Error posting data:', error);
+            const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.detail || 'Неизвестная ошибка!': 'Неизвестная ошибка !';
+			console.log(errorMessage);
         }
     };
-    
-
     useEffect(() => {
         if (field.select_type) {
-            fetchData();
+            getOptions();
         }
     }, [field.select_type]);
 
