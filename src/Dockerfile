@@ -3,13 +3,13 @@ FROM python:3.11 as requirements-stage
 WORKDIR /tmp
 
 # Установка Poetry по официальной инструкции
-RUN curl -sSL https://install.python-poetry.org | python3 - \
+#RUN curl -sSL https://install.python-poetry.org | python3 - \
     && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
-COPY ./pyproject.toml ./poetry.lock* /tmp/
+#COPY ./pyproject.toml ./poetry.lock* /tmp/
 
 # Корректная команда для экспорта
-RUN poetry export --without-hashes --format=requirements.txt --output=requirements.txt
+#RUN poetry export --without-hashes --format=requirements.txt --output=requirements.txt
 
 
 FROM python:3.11
