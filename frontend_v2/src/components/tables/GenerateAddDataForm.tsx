@@ -48,7 +48,7 @@ function GenerateAddDataForm({ activeTable, onSave , setErrorMessage}: GenerateA
         for (const key in formOfAddedData) {insertData.append(key, formOfAddedData[key] as string);}
     
         try {
-            await UniversalAxiosRequest(`${apiUrl}/database/save_data`, 'POST', insertData);
+            await UniversalAxiosRequest(`${apiUrl}/database/${activeTable}/save_record`, 'POST', insertData);
             //setFormOfAddedData({}); // очищение чтобы не добавлять подряд одни и теже данные
             setIsDirty(false);
             setErrorMessage(null);

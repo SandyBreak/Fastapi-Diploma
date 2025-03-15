@@ -20,10 +20,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({row, activeTable, onSave, se
 
     const handleButtonClick = async (rowId: number) => {
         try {
-            const deleteData = new FormData()
-            deleteData.append('name_table', activeTable)
-            deleteData.append('row_id', rowId.toString())
-            await UniversalAxiosRequest(`${apiUrl}/database/delete_data`, 'DELETE', deleteData)
+            await UniversalAxiosRequest(`${apiUrl}/database/${activeTable}/delete_record/${rowId.toString()}`, 'DELETE')
             setErrorMessage(null)
             onSave()
         } catch (error) {

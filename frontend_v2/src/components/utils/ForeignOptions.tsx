@@ -19,10 +19,9 @@ const ForeignOptions = ({field}: ForeignOptionsProps) => {
 
     const getOptions = async () => {
         try {
-            const activeTable = new FormData();
             if (field.select_type) {
-                activeTable.append('name_table', field.select_type);
-                const response = await UniversalAxiosRequest(`${apiUrl}/database/get_foreign_data`, 'POST', activeTable);
+                let activeTable = field.select_type
+                const response = await UniversalAxiosRequest(`${apiUrl}/database/${activeTable}/get_foreign_data`, 'POST');
                 if (Array.isArray(response)) {
                     setOptions(response);
 
