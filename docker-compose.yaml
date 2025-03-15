@@ -13,6 +13,7 @@ services:
       - primary_postgres_db_network
 
   frontend:
+    container_name: fastapi_frontend
     build:
       context: ./frontend_v2
     ports:
