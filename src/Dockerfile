@@ -2,9 +2,9 @@ FROM python:3.11 as requirements-stage
 
 WORKDIR /tmp
 
-RUN pip install poetry
+RUN pip install poetry==2.1.1
 
-COPY ./pyproject.toml ./poetry.lock* /tmp/
+COPY pyproject.toml poetry.lock* /tmp/
 
 RUN poetry export --without-hashes --format=requirements.txt --output=requirements.txt
 
