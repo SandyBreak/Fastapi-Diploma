@@ -1,0 +1,138 @@
+.defaultButton{
+	padding: 10px;
+	border-radius: 3px;
+	margin: 20px;
+	min-width: 16%;
+	outline: none;
+	transition: background-color 0.5s, border-color 0.5s; /* Плавный переход */
+}
+
+.saveOrDeleteButton{
+	padding: 10px;
+	border-radius: 2px;
+	outline: none;
+	transition: background-color 0.5s, border-color 0.5s; /* Плавный переход */
+}
+.staticButton{
+	background-color: black;
+    color: white;
+}
+.error-message{
+	text-align: center;
+	background-color: rgb(232, 74, 100);
+}
+.logoutButton{
+	display: flex;
+	margin: 0;
+}
+.headerContainer:b{
+	margin: 0; 
+	text-align: center;
+}
+
+.saveOrDeleteButton:hover {
+	background-color: white;
+	color: black;
+	outline: 2px solid black;
+  }
+.defaultButton:hover {
+	background-color: white;
+	color: black;
+	outline: 2px solid black;
+  }
+
+.defaultButton:focus {
+	transition: 0.5s;
+	outline: 2px solid black;
+}
+
+.saveOrDeleteButton:focus {
+	transition: 0.5s;
+	outline: 2px solid black;
+}
+.activeButton {
+    background-color: white;
+    color: black;
+	outline: 2px solid black;
+}
+
+.inactiveButton {
+    background-color: black;
+    color: white;
+}
+
+
+.menuTable{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.addDataForm{
+	/*display: flex;
+	flex-direction: row;*/
+}
+
+.mainSection{
+	display: flex;
+  	flex-direction: column;
+  	min-height: 76vh;
+}
+
+.notFoundpageContainer{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.loginPageContainer{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.loginForm{
+	width: 30%;
+}
+.buttonContainer{
+	display: flex;
+	justify-content: center;
+}
+
+
+/*HEADER*/
+header{
+	color: black;
+	border-bottom: 3px solid black;
+	display: flex;
+	justify-content: center;
+}
+.main-menu{
+	display: flex;
+	justify-content: center;
+	min-width: 60%;
+}
+.headerContainer{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-width: 20%;
+}
+
+/*FOOTER*/
+footer{
+	display: flex;
+	align-items: start;
+	justify-content: center;
+	border-top: 3px solid black;
+	width: 100%;
+}
+
+.copyright{
+	padding: 0.5%;
+	display: flex;
+	align-items: center;
+}

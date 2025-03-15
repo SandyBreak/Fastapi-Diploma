@@ -4,7 +4,7 @@ from fastapi import Depends, APIRouter
 from .config import fastapi_users, current_active_user
 from .config import auth_backend
 
-from src.schemas.fastapi_users import UserRead, UserUpdate
+from src.schemas.fastapi_users import UserRead, UserUpdate, UserCreate
 from src.models.user import User
 
 router = APIRouter(prefix='',)
@@ -14,7 +14,11 @@ router.include_router(
         prefix="/auth/jwt",
         tags=["auth"],
     )
-
+router.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"]
+)
 router.include_router(
     fastapi_users.get_users_router(UserRead, UserUpdate),
     prefix="/users", 
