@@ -20,7 +20,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Дополнительные настройки */
+    "typeRoots": ["node_modules/@types", "src/types"],  // Указываем путь к пользовательским типам
+    "types": ["node", "crypto-browserify"]  // Добавляем `crypto-browserify` в список типов
   },
-  "include": ["src"]
+  
+  "include": ["src"],
 }
