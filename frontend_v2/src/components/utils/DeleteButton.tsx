@@ -16,11 +16,11 @@ interface DeleteButtonProps {
 }
 
 const DeleteButton: React.FC<DeleteButtonProps> = ({row, activeTable, onSave, setErrorMessage}) => {
-    //const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     const handleButtonClick = async (rowId: number) => {
         try {
-            await UniversalAxiosRequest(`api/database/${activeTable}/delete_record/${rowId.toString()}`, 'DELETE')
+            await UniversalAxiosRequest(`${apiUrl}/api/database/${activeTable}/delete_record/${rowId.toString()}`, 'DELETE')
             setErrorMessage(null)
             onSave()
         } catch (error) {

@@ -8,7 +8,6 @@ const LoginPage = () => {
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
-    //const apiUrl = import.meta.env.VITE_API_URL;
     const apiUrl = import.meta.env.VITE_API_URL;
 
 
