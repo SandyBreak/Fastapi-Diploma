@@ -25,7 +25,7 @@ services:
       - primary_postgres_db_network
       - frontend_backend_network
     env_file:
-      - ./docker-compose.env
+      - VITE_API_URL=${VITE_API_URL}
 
 networks:
   primary_postgres_db_network:
