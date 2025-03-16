@@ -9,6 +9,7 @@ const LoginPage = () => {
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
     //const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = import.meta.env.VITE_API_URL;
 
 
     const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +29,7 @@ const LoginPage = () => {
             'Content-Type': 'application/x-www-form-urlencoded',
         }
         try {
-            const response = await UniversalAxiosRequest(`api/auth/jwt/login`, 'POST', body, headers);
+            const response = await UniversalAxiosRequest(`${apiUrl}/api/auth/jwt/login`, 'POST', body, headers);
             //console.log(response)
             if ('access_token' in response) {
                 localStorage.setItem('token', response.access_token);
