@@ -29,7 +29,7 @@ const LoginPage = () => {
         }
         try {
             const response = await UniversalAxiosRequest(`api/auth/jwt/login`, 'POST', body, headers);
-            console.log(response)
+            //console.log(response)
             if ('access_token' in response) {
                 localStorage.setItem('token', response.access_token);
                 navigate('/authenticated-route');
