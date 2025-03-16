@@ -14,7 +14,7 @@ function GenerateTableView({ activeTable }: GenerateTableViewProps) {
 	const [tableData, setTableData] = React.useState<ResponseTypes[]>([]);
 	const [errorMessage, setErrorMessage] = React.useState<string | null>(null); // Состояние для сообщения об ошибке
 	const rerender = React.useReducer(() => ({}), {})[1]
-	const apiUrl = import.meta.env.VITE_API_URL;
+	//const apiUrl = import.meta.env.VITE_API_URL;
 	
 	const handleRerenderAndGetTableData = async () => {
 		await getTableData();
@@ -37,7 +37,7 @@ function GenerateTableView({ activeTable }: GenerateTableViewProps) {
   	  	try {
   	  	  	const name_table = new FormData();
   	  	  	name_table.append('name_table', activeTable);
-  	  	  	const response = await UniversalAxiosRequest(`${apiUrl}/database/get_table`, 'POST', name_table);
+  	  	  	const response = await UniversalAxiosRequest(`api/database/get_table`, 'POST', name_table);
 			setTableData(response as ResponseTypes[]);
   	  	} catch (error) {
 			const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.detail || 'Неизвестная ошибка!': 'Неизвестная ошибка !';

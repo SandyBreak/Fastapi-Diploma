@@ -8,14 +8,14 @@ import logo from '../../assets/logo.png';
 const Header = () => {
     const [activePath, setActivePath] = useState(() => {return localStorage.getItem('activePath') || '/authenticated-route';});
     const [username, setUsername] = useState(null);
-    const apiUrl = import.meta.env.VITE_API_URL;
+    //const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     
     React.useEffect(() => {
         const fetchImages = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await axios.get(`${apiUrl}/users/me`, {
+                const response = await axios.get(`api/users/me`, {
                     headers: {
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`

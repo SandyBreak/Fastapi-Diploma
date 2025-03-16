@@ -16,7 +16,7 @@ interface GenerateAddDataFormProps {
 interface FormOfAddedData {[key: string]: string | number;}
 function GenerateAddDataForm({ activeTable, onSave , setErrorMessage}: GenerateAddDataFormProps) {
     const [isDirty, setIsDirty] = React.useState(false);
-    const apiUrl = import.meta.env.VITE_API_URL;
+    //const apiUrl = import.meta.env.VITE_API_URL;
 
     const [formOfAddedData, setFormOfAddedData] = useState<FormOfAddedData>(() => {
         const savedData = localStorage.getItem('formOfAddedData');
@@ -48,7 +48,7 @@ function GenerateAddDataForm({ activeTable, onSave , setErrorMessage}: GenerateA
         for (const key in formOfAddedData) {insertData.append(key, formOfAddedData[key] as string);}
     
         try {
-            await UniversalAxiosRequest(`${apiUrl}/database/${activeTable}/save_record`, 'POST', insertData);
+            await UniversalAxiosRequest(`api/database/${activeTable}/save_record`, 'POST', insertData);
             //setFormOfAddedData({}); // очищение чтобы не добавлять подряд одни и теже данные
             setIsDirty(false);
             setErrorMessage(null);

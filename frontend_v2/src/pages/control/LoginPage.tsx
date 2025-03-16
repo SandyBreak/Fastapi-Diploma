@@ -9,7 +9,6 @@ const LoginPage = () => {
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
     //const apiUrl = import.meta.env.VITE_API_URL;
-    //console.log('API URL:', apiUrl);
 
 
     const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {

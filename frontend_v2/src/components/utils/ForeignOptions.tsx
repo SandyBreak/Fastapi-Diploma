@@ -15,13 +15,13 @@ interface ForeignOptionsProps {
 }
 const ForeignOptions = ({field}: ForeignOptionsProps) => {
     const [options, setOptions] = useState<Option[]>([]);
-    const apiUrl = import.meta.env.VITE_API_URL;
+    //const apiUrl = import.meta.env.VITE_API_URL;
 
     const getOptions = async () => {
         try {
             if (field.select_type) {
                 let activeTable = field.select_type
-                const response = await UniversalAxiosRequest(`${apiUrl}/database/${activeTable}/get_foreign_data`, 'POST');
+                const response = await UniversalAxiosRequest(`api/database/${activeTable}/get_foreign_data`, 'POST');
                 if (Array.isArray(response)) {
                     setOptions(response);
 

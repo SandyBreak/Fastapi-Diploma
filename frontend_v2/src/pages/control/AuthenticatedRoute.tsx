@@ -10,7 +10,7 @@ const AuthenticatedRoute = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const token = localStorage.getItem('token');
-    const apiUrl = import.meta.env.VITE_API_URL;
+    //const apiUrl = import.meta.env.VITE_API_URL;
     const Authentication = async () => {
     
         if (!token) {
@@ -23,7 +23,7 @@ const AuthenticatedRoute = () => {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
-            await UniversalAxiosRequest(`${apiUrl}/authenticated-route`, 'GET', {}, {headers})
+            await UniversalAxiosRequest(`api/authenticated-route`, 'GET', {}, {headers})
 
             setLoading(false);
         } catch (error: unknown) {
