@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   define: {
     'global.crypto': crypto, // создаем глобальную переменную для crypto
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
+    envPrefix: 'VITE_',  // Убедитесь, что префикс корректный
     'global': 'window', // возможно это тоже поможет для работы в браузере
   },
   build: {
