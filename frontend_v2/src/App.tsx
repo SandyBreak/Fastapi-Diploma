@@ -33,6 +33,10 @@ const App: React.FC = () => {
         element: <LoginPage />,
       },
       {
+        path: "/",
+        element: <LoginPage />,
+      },
+      {
         path: "*",
         element: <NotFoundPage />
       },
