@@ -76,7 +76,7 @@
 .mainSection{
 	display: flex;
   	flex-direction: column;
-  	min-height: 76vh;
+  	min-height: 88vh;
 }
 
 .notFoundpageContainer{
